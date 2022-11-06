@@ -1,14 +1,15 @@
-import numpy as np
 import torch
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 import cv2
 import os
 import pandas as pd
+import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
 
 class cifarDataset(Dataset):
     def __init__(self, csv, dir_name, transform=None):
-        self.annotations = pd.read_csv(csv)
+        self.annotations = pd.read_csv(os.path.join(dir_name, csv))
         self.dir_name = dir_name
         self.transform = transform
         self.num_to_word = dict(enumerate(self.annotations.iloc[:,1].unique()))
@@ -25,3 +26,17 @@ class cifarDataset(Dataset):
         if self.transform:
             image = self.transform(image)
         return image, label
+
+def main():
+    data = cifarDataset(csv="data/cifar100_nl_clean.csv",
+                        dir_name="dataset",
+                        transform=transforms.ToTensor())
+    batch_size = 1000
+    train_loader = DataLoader(dataset=data, batch_size=batch_size, shuffle=True)
+    for (image, label) in train_loader:
+        print(image.shape, label.shape)
+        plt.imsave("test_img.jpg", image[0].permute(1, 2, 0).numpy())
+        break
+
+if __name__ == '__main__':
+    main()
