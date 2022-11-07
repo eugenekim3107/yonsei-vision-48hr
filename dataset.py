@@ -22,7 +22,7 @@ class cifarDataset(Dataset):
         image_path = self.annotations.iloc[index, 0]
         image = cv2.imread(os.path.join(self.dir_name, image_path))
         image = cv2.resize(image, (32,32))
-        label = torch.tensor(self.word_to_num[self.annotations.iloc[index, 1]], dtype=torch.uint8)
+        label = torch.tensor(self.word_to_num[self.annotations.iloc[index, 1]], dtype=torch.long)
         if self.transform:
             image = self.transform(image)
         return image, label
@@ -31,10 +31,10 @@ def main():
     data = cifarDataset(csv="data/cifar100_nl_clean.csv",
                         dir_name="dataset",
                         transform=transforms.ToTensor())
-    batch_size = 1000
+    batch_size = 1
     train_loader = DataLoader(dataset=data, batch_size=batch_size, shuffle=True)
     for (image, label) in train_loader:
-        print(image.shape, label.shape)
+        print(image.shape, label)
         plt.imsave("test_img.jpg", image[0].permute(1, 2, 0).numpy())
         break
 

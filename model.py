@@ -96,7 +96,7 @@ class ResNet(nn.Module):
         return out
 
 class ResNet(nn.Module):
-    def __init__(self, block, num_blocks, num_classes=10):
+    def __init__(self, block, num_blocks, num_classes=100):
         super(ResNet, self).__init__()
         self.in_planes = 64
 
@@ -137,7 +137,7 @@ class ResNet(nn.Module):
         return out
 
 def ResNet18():
-    return ResNet(PreActBlock, [2,2,2,2])
+    return ResNet(BasicBlock, [2,2,2,2])
 
 def ResNet34():
     return ResNet(BasicBlock, [3,4,6,3])
@@ -151,7 +151,10 @@ def ResNet101():
 def ResNet152():
     return ResNet(Bottleneck, [3,8,36,3])
 
-def test():
+def main():
     net = ResNet18()
-    y = net(Variable(torch.randn(1,3,32,32)))
-    print(y.size())
+    y = net(Variable(torch.randn(2,3,32,32)))
+    print(y.argmax(axis=1), y)
+
+if __name__ == "__main__":
+    main()
