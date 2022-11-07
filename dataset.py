@@ -28,7 +28,7 @@ class cifarDataset(Dataset):
         return image, label
 
 def main():
-    data = cifarDataset(csv="data/cifar100_nl_clean.csv",
+    data = cifarDataset(csv="trueCIFAR100/cifar100_nl_clean.csv",
                         dir_name="dataset",
                         transform=transforms.ToTensor())
     batch_size = 1

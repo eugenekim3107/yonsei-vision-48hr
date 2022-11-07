@@ -8,17 +8,17 @@ import os
 from dataset import cifarDataset
 import torch.nn as nn
 import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
 
 # Hyperparameters
 lr = 2e-5
 batch_size = 1000
-weight_decay = 0
-epochs = 100
+weight_decay = 1e-4
+epochs = 30
 transform = transforms.ToTensor()
 train_accuracy = []
 test_accuracy = []
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
 def train_fn(train_loader, model, optimizer, loss_fn):
     model.train()
@@ -71,8 +71,8 @@ def main():
     loss_fn = nn.CrossEntropyLoss()
 
     dir_name = "dataset"
-    csv = "data/cifar100_nl_clean.csv"
-    csv_test = "data/cifar100_nl_test.csv"
+    csv = "trueCIFAR100/cifar100_nl_clean.csv"
+    csv_test = "trueCIFAR100/cifar100_nl_test.csv"
     dataset = cifarDataset(csv=csv, dir_name=dir_name, transform=transform)
     test_set = cifarDataset(csv=csv_test, dir_name=dir_name,
                             transform=transform)
@@ -92,8 +92,7 @@ def main():
     for epoch in range(epochs):
         train_fn(train_loader, model, optimizer, loss_fn)
         test_fn(test_loader, model)
-    print(len(train_accuracy), len(test_accuracy))
+    torch.save(model.state_dict(), "modelStates/baseModel.pth")
 
 if __name__ == "__main__":
     main()
-
