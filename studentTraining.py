@@ -71,8 +71,8 @@ def main():
     loss_fn = nn.CrossEntropyLoss()
 
     dir_name = "dataset"
-    csv = "trueCIFAR100/cifar100_nl_clean.csv"
-    csv_test = "trueCIFAR100/cifar100_nl_test.csv"
+    csv = "data/cifar100_nl_clean.csv"
+    csv_test = "data/cifar100_nl_test.csv"
     dataset = cifarDataset(csv=csv, dir_name=dir_name, transform=transform)
     test_set = cifarDataset(csv=csv_test, dir_name=dir_name,
                             transform=transform)
@@ -87,7 +87,7 @@ def main():
                             drop_last=False)
     test_loader = DataLoader(dataset=test_set,
                              batch_size=batch_size,
-                             shuffle=False)
+                             shuffle=True)
 
     for epoch in range(epochs):
         train_fn(train_loader, model, optimizer, loss_fn)

@@ -72,12 +72,12 @@ def main():
     loss_fn = nn.CrossEntropyLoss()
 
     dir_name = "dataset"
-    csv = "trueCIFAR100/cifar100_nl_clean.csv"
-    csv_test = "trueCIFAR100/cifar100_nl_test.csv"
+    csv = "data/cifar100_weighted.csv"
+    csv_test = "data/cifar100_nl_test.csv"
     dataset = cifarDataset(csv=csv, dir_name=dir_name, transform=transform)
     test_set = cifarDataset(csv=csv_test, dir_name=dir_name,
                             transform=transform)
-    train_set, val_set = torch.utils.data.random_split(dataset, [40000, 9998])
+    train_set, val_set = torch.utils.data.random_split(dataset, [40000, 9997])
     train_loader = DataLoader(dataset=train_set,
                               batch_size=batch_size,
                               shuffle=True,
@@ -88,12 +88,12 @@ def main():
                             drop_last=False)
     test_loader = DataLoader(dataset=test_set,
                              batch_size=batch_size,
-                             shuffle=False)
+                             shuffle=True)
 
     for epoch in range(epochs):
         train_fn(train_loader, model, optimizer, loss_fn)
         test_fn(test_loader, model)
-    torch.save(model.state_dict(), "modelStates/baseModel.pth")
+    torch.save(model.state_dict(), "modelStates/studentModel.pth")
 
 if __name__ == "__main__":
     main()

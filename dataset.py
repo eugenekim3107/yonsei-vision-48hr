@@ -25,10 +25,11 @@ class cifarDataset(Dataset):
         label = torch.tensor(self.word_to_num[self.annotations.iloc[index, 1]], dtype=torch.long)
         if self.transform:
             image = self.transform(image)
-        return image, label
+        # return image_path when creating weighted csv
+        return image, label# ,image_path
 
 def main():
-    data = cifarDataset(csv="trueCIFAR100/cifar100_nl_clean.csv",
+    data = cifarDataset(csv="data/cifar100_nl_clean.csv",
                         dir_name="dataset",
                         transform=transforms.ToTensor())
     batch_size = 1
