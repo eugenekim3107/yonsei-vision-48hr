@@ -52,12 +52,12 @@ def test_fn(test_loader, model):
     correct = 0
     total = 0
 
-    with torch.no_grad():
-        for batch_idx, (x, y) in enumerate(loop):
-            x,y = x.to(device), y.to(device)
+    for batch_idx, (x, y) in enumerate(loop):
+        x,y = x.to(device), y.to(device)
+        with torch.no_grad():
             out = model(x)
-            correct += int(sum(out.argmax(axis=1) == y))
-            total += y.size(0)
+        correct += int(sum(out.argmax(axis=1) == y))
+        total += y.size(0)
 
     accu = 100. * (correct / total)
     test_accuracy.append(accu)
