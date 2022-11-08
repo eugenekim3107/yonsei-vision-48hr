@@ -6,14 +6,15 @@ import os
 import pandas as pd
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
+import numpy as np
 
 class cifarDataset(Dataset):
     def __init__(self, csv, dir_name, transform=None):
         self.annotations = pd.read_csv(os.path.join(dir_name, csv))
         self.dir_name = dir_name
         self.transform = transform
-        self.num_to_word = dict(enumerate(self.annotations.iloc[:,1].unique()))
-        self.word_to_num = {value:key for (key,value) in self.num_to_word.items()}
+        self.num_to_word = dict(enumerate(np.sort(self.annotations.iloc[:, 1].unique())))
+        self.word_to_num = {value: key for (key, value) in self.num_to_word.items()}
 
     def __len__(self):
         return len(self.annotations)
@@ -36,7 +37,6 @@ def main():
     train_loader = DataLoader(dataset=data, batch_size=batch_size, shuffle=True)
     for (image, label) in train_loader:
         print(image.shape, label)
-        plt.imsave("test_img.jpg", image[0].permute(1, 2, 0).numpy())
         break
 
 if __name__ == '__main__':
