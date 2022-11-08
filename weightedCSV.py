@@ -32,7 +32,7 @@ def weightedCSV(original_csv, dir_name, supervisor_model, sample_num):
         for (x, y, image_path) in loader:
             x, y = x.to(device), y.to(device)
             out = supervisor_model(x)
-            loss = loss_fn(out, y)
+            loss = 1. - loss_fn(out, y)
             proportions.append(float(loss))
             labels.append(int(y))
             file_names.append(image_path[0])
